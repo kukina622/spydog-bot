@@ -18,7 +18,7 @@ Example: /poll
 ---
 
 ## How to use
-1. type your config like .env.example
+1. type your config like .env
 2. set your NODE_ENV
 3. copy .env.example to .env.{NODE_ENV}
 4. finally,you can use ts-node run it
