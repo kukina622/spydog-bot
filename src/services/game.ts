@@ -12,9 +12,7 @@ export class gameService {
     return this.instance;
   }
   public startGame() {
-    this.assignCard()
+    this.assignCard();
   }
-  private assignCard() {
-    
-  }
+  private assignCard() {}
 }

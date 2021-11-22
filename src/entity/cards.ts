@@ -9,14 +9,14 @@ export class cards {
     type: "mediumtext",
     nullable: true,
     default: "NULL",
-    collation: "utf8mb4_unicode_ci",
+    collation: "utf8mb4_unicode_ci"
   })
   card_name: string;
 
   @Column({
     type: "mediumtext",
     nullable: true,
-    default: "NULL",
+    default: "NULL"
   })
   card_url: string;
 

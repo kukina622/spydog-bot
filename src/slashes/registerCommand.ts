@@ -33,9 +33,7 @@ export async function registerCommand(registerInfo: registerInfo) {
   // register new command
   console.log("Started refreshing application (/) commands.");
   if (GUILD_ID === undefined) {
-    const commands = commands_all
-      .filter((x) => x.global)
-      .map((x) => x.command);
+    const commands = commands_all.filter((x) => x.global).map((x) => x.command);
     await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
   } else {
     const commands = commands_all

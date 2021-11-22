@@ -1,3 +1,3 @@
 export * from "./message";
-export * from "./interactionSlash"
-export * from "./interactionButton"
+export * from "./interactionSlash";
+export * from "./interactionButton";
