@@ -5,7 +5,7 @@ import {
   interactionSlashEvent,
   interactionButtonEvent
 } from "./events";
-import { registerCommand } from "./slashs";
+import { registerCommand } from "./slashes";
 import { connectDB } from "./entity";
 import { config as importenv } from "dotenv-flow";
 

@@ -11,7 +11,7 @@ Discord event commands handler
 ### Services
 Business Logic Layer
 
-### slashs
+### Slashes
 Discord slash commands 
 Example: /poll
 
