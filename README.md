@@ -1,4 +1,4 @@
-# spydog_bot
+# spydog-bot
 
 ## Folder structure
 
