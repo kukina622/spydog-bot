@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
-
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { assigned_card } from "./assigned_card";
 @Entity()
 export class users {
   @PrimaryGeneratedColumn("increment")
@@ -24,11 +24,15 @@ export class users {
   @Column({ default: false })
   is_spy: boolean;
 
+  @OneToMany((type) => assigned_card, (Assigned_Card) => Assigned_Card.users)
+  assigned_card: assigned_card[];
+
   constructor(param: users = {} as users) {
-    const { uid, name, discord_id, is_spy } = param;
+    const { uid, name, discord_id, is_spy, assigned_card } = param;
     this.uid = uid;
     this.name = name;
     this.discord_id = discord_id;
     this.is_spy = is_spy;
+    this.assigned_card = assigned_card;
   }
 }

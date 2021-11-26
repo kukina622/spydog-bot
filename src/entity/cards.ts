@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { assigned_card } from "./assigned_card";
 
 @Entity()
 export class cards {
@@ -20,10 +21,18 @@ export class cards {
   })
   card_url: string;
 
+  @Column({ default: false })
+  hidden_use: boolean;
+
+  @OneToMany((type) => assigned_card, (Assigned_Card) => Assigned_Card.cards)
+  assigned_card: assigned_card[];
+
   constructor(param: cards = {} as cards) {
-    const { cid, card_name, card_url } = param;
+    const { cid, card_name, card_url, hidden_use, assigned_card } = param;
     this.cid = cid;
     this.card_name = card_name;
     this.card_url = card_url;
+    this.hidden_use = hidden_use;
+    this.assigned_card = assigned_card;
   }
 }
