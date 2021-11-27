@@ -21,10 +21,14 @@ export class assigned_card {
   @JoinColumn({ name: "cid" })
   cards: cards;
 
+  @Column({ default: false })
+  is_used: boolean;
+
   constructor(param: assigned_card = {} as assigned_card) {
-    const { assign_id, users, cards } = param;
+    const { assign_id, users, cards, is_used } = param;
     this.assign_id = assign_id;
     this.users = users;
     this.cards = cards;
+    this.is_used = is_used;
   }
 }
