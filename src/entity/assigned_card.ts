@@ -24,15 +24,11 @@ export class assigned_card {
   @Column({ default: false })
   is_used: boolean;
 
-  @Column({ default: false })
-  is_spycard: boolean;
-
   constructor(param: assigned_card = {} as assigned_card) {
-    const { assign_id, users, cards, is_used, is_spycard } = param;
+    const { assign_id, users, cards, is_used } = param;
     this.assign_id = assign_id;
     this.users = users;
     this.cards = cards;
     this.is_used = is_used;
-    this.is_spycard = is_spycard;
   }
 }

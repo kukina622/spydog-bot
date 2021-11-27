@@ -24,15 +24,20 @@ export class cards {
   @Column({ default: false })
   hidden_use: boolean;
 
+  @Column({ default: false })
+  is_spycard: boolean;
+
   @OneToMany((type) => assigned_card, (Assigned_Card) => Assigned_Card.cards)
   assigned_card: assigned_card[];
 
   constructor(param: cards = {} as cards) {
-    const { cid, card_name, card_url, hidden_use, assigned_card } = param;
+    const { cid, card_name, card_url, hidden_use, assigned_card, is_spycard } =
+      param;
     this.cid = cid;
     this.card_name = card_name;
     this.card_url = card_url;
     this.hidden_use = hidden_use;
     this.assigned_card = assigned_card;
+    this.is_spycard = is_spycard;
   }
 }
