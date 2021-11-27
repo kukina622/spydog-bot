@@ -15,4 +15,12 @@ export class assignedCardRepo {
   public static getInstance(): assignedCardRepo {
     return this.instance;
   }
+  public getAssignedCards(): Promise<assigned_card[]> {
+    return this.repo
+      .createQueryBuilder("ac")
+      .innerJoinAndSelect("ac.cards", "c")
+      .innerJoinAndSelect("ac.users", "u")
+      .orderBy("ac.assign_id")
+      .getMany();
+  }
 }
