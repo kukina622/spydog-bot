@@ -7,8 +7,8 @@ import {
 } from "./events";
 import { registerCommand } from "./slashes";
 import { connectDB } from "./entity";
+import { assignedCardRepo, cardRepo, userRepo } from "./repositories";
 import { config as importenv } from "dotenv-flow";
-
 importenv();
 const {
   BOT_TOKEN,
@@ -52,5 +52,8 @@ client.on("interactionCreate", (interaction) => {
     CLIENT_ID: <string>CLIENT_ID,
     GUILD_ID
   });
+  assignedCardRepo.init();
+  cardRepo.init();
+  userRepo.init();
   await client.login(process.env.BOT_TOKEN);
 })();
