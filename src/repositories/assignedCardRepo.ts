@@ -23,4 +23,17 @@ export class assignedCardRepo {
       .orderBy("ac.assign_id")
       .getMany();
   }
+  public getAssignedCardsByAssignIdAndDiscordId(
+    assignId: number,
+    discordId: string
+  ) {
+    return this.repo
+      .createQueryBuilder("ac")
+      .innerJoinAndSelect("ac.cards", "c")
+      .innerJoinAndSelect("ac.users", "u")
+      .where("ac.assign_id = :assign_id", { assign_id: assignId })
+      .andWhere("u.discord_id = :discord_id", { discord_id: discordId })
+      .orderBy("ac.assign_id")
+      .getOne();
+  }
 }
