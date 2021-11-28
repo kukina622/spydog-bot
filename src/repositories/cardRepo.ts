@@ -1,5 +1,5 @@
 import { getRepository, Repository } from "typeorm";
-import { cards } from "../entity/cards";
+import { cards } from "../entities/cards";
 
 export class cardRepo {
   private static instance: cardRepo;

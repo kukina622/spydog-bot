@@ -4,8 +4,8 @@ import {
   MessageButton,
   MessageEmbed
 } from "discord.js";
-import { assigned_card } from "../entity/assigned_card";
-import { users } from "../entity/users";
+import { assigned_card } from "../entities/assigned_card";
+import { users } from "../entities/users";
 import { assignedCardRepo } from "../repositories/assignedCardRepo";
 export class gameService {
   private static instance: gameService;

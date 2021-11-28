@@ -6,7 +6,7 @@ import {
   interactionButtonEvent
 } from "./events";
 import { registerCommand } from "./slashes";
-import { connectDB } from "./entity";
+import { connectDB } from "./entities";
 import { assignedCardRepo, cardRepo, userRepo } from "./repositories";
 import { gameService } from "./services";
 import { config as importenv } from "dotenv-flow";

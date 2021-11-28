@@ -1,5 +1,5 @@
 import { getRepository, Repository } from "typeorm";
-import { users } from "../entity/users";
+import { users } from "../entities/users";
 
 export class userRepo {
   private static instance: userRepo;
