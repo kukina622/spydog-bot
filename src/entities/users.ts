@@ -24,15 +24,24 @@ export class users {
   @Column({ default: false })
   is_spy: boolean;
 
+  @Column({
+    type: "varchar",
+    length: 10,
+    nullable: true,
+    default: "NULL"
+  })
+  team: string;
+
   @OneToMany((type) => assigned_card, (Assigned_Card) => Assigned_Card.users)
   assigned_card: assigned_card[];
 
   constructor(param: users = {} as users) {
-    const { uid, name, discord_id, is_spy, assigned_card } = param;
+    const { uid, name, discord_id, is_spy, assigned_card, team } = param;
     this.uid = uid;
     this.name = name;
     this.discord_id = discord_id;
     this.is_spy = is_spy;
     this.assigned_card = assigned_card;
+    this.team = team;
   }
 }
