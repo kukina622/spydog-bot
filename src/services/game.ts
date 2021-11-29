@@ -46,11 +46,13 @@ export class gameService {
           assignedCardsOfDiscordId,
           is_spy
         );
-        await this.client.users.cache.get(discordId)?.send({
-          embeds: [embed],
-          components: [row],
-          files: files
-        });
+        if (files.length > 0) {
+          await this.client.users.cache.get(discordId)?.send({
+            embeds: [embed],
+            components: [row],
+            files: files
+          });
+        }
       }
 
       const { files, embed, row } = this.getSendAssignedCardsInfo(
@@ -131,7 +133,7 @@ export class gameService {
         cards.hidden_use ? "https://i.imgur.com/hHe3ulL.jpg" : cards.card_url
       ]
     };
-    await interaction.deferUpdate()
+    await interaction.deferUpdate();
     return await (
       this.client.channels.cache.get(<string>CHANNEL_ID) as TextChannel
     )?.send(sendContent);
