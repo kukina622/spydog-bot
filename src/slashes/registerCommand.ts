@@ -1,5 +1,8 @@
 import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import {
+  RESTPostAPIApplicationCommandsJSONBody,
+  Routes
+} from "discord-api-types/v9";
 
 import startgame from "./startGame";
 import listCard from "./listCard";
@@ -33,16 +36,18 @@ export async function registerCommand(registerInfo: registerInfo) {
   // await clearCommand(registerInfo);
   // register new command
   console.log("Started refreshing application (/) commands.");
-  if (GUILD_ID === undefined) {
-    const commands = commands_all.filter((x) => x.global).map((x) => x.command);
-    await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
-  } else {
-    const commands = commands_all
-      .filter((x) => !x.global)
-      .map((x) => x.command);
+  let commands: RESTPostAPIApplicationCommandsJSONBody[];
+  // register guild command 
+  if (GUILD_ID !== undefined) {
+    commands = commands_all.filter((x) => !x.global).map((x) => x.command);
     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
       body: commands
     });
   }
+  // register global command
+  commands = commands_all.filter((x) => x.global).map((x) => x.command);
+  await rest.put(Routes.applicationCommands(CLIENT_ID), {
+    body: commands
+  });
   console.log("Successfully reloaded application (/) commands.");
 }
