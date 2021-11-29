@@ -2,7 +2,8 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 
 import startgame from "./startGame";
-const commands_all = [startgame];
+import listCard from "./listCard";
+const commands_all = [startgame, listCard];
 
 let rest: REST;
 
