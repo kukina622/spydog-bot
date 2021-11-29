@@ -121,7 +121,7 @@ export class gameService {
     const { users, cards } = usedCardInfo;
     let messageContent = "";
     if (cards.is_spycard) {
-      messageContent = "間諜使用了";
+      messageContent = `${users.team}隊的間諜使用了`;
     } else if (cards.hidden_use) {
       messageContent = "某人使用了卡片";
     } else {
