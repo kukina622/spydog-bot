@@ -2,7 +2,10 @@ import {
   Client,
   MessageActionRow,
   MessageButton,
-  MessageEmbed
+  MessageEmbed,
+  TextChannel,
+  ButtonInteraction,
+  CacheType
 } from "discord.js";
 import { assigned_card } from "../entities/assigned_card";
 import { users } from "../entities/users";
@@ -96,5 +99,41 @@ export class gameService {
       .setDescription(description);
     const row = new MessageActionRow().addComponents(messageButtonList);
     return { files, embed, row };
+  }
+  public async userUseCard(
+    assignId: number,
+    discordId: string,
+    interaction: ButtonInteraction<CacheType>
+  ) {
+    const { CHANNEL_ID } = process.env;
+    const usedCardInfo = await assignedCardRepo
+      .getInstance()
+      .getAssignedCardsByAssignIdAndDiscordId(assignId, discordId);
+
+    if (usedCardInfo === undefined) {
+      return await interaction.reply("卡片使用失敗");
+    } else if (usedCardInfo.is_used) {
+      return await interaction.reply("卡片已使用過");
+    }
+
+    const { users, cards } = usedCardInfo;
+    let messageContent = "";
+    if (cards.is_spycard) {
+      messageContent = "間諜使用了";
+    } else if (cards.hidden_use) {
+      messageContent = "某人使用了卡片";
+    } else {
+      messageContent = `<@${users.discord_id}>使用了`;
+    }
+    const sendContent = {
+      content: messageContent,
+      files: [
+        cards.hidden_use ? "https://i.imgur.com/hHe3ulL.jpg" : cards.card_url
+      ]
+    };
+    await interaction.deferUpdate()
+    return await (
+      this.client.channels.cache.get(<string>CHANNEL_ID) as TextChannel
+    )?.send(sendContent);
   }
 }
