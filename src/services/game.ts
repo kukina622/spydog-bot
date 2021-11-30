@@ -34,7 +34,7 @@ export class gameService {
     await this.sendAssignedCards();
   }
   private async sendAssignedCards() {
-    if (!this.stateCheck(gameState.start)) return
+    if (!this.stateCheck(gameState.start)) return;
     const assignedCards = await assignedCardRepo
       .getInstance()
       .getAssignedCards();
@@ -117,7 +117,7 @@ export class gameService {
     discordId: string,
     interaction: ButtonInteraction<CacheType>
   ) {
-    if (!this.stateCheck(gameState.start)) return
+    if (!this.stateCheck(gameState.start)) return;
 
     const { CHANNEL_ID } = process.env;
     const usedCardInfo = await assignedCardRepo
@@ -152,7 +152,7 @@ export class gameService {
     )?.send(sendContent);
   }
   public async listNotUsedCards(discordId: string) {
-    if (!this.stateCheck(gameState.start)) return
+    if (!this.stateCheck(gameState.start)) return;
 
     const user: users | undefined = await userRepo
       .getInstance()

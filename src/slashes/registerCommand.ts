@@ -37,7 +37,7 @@ export async function registerCommand(registerInfo: registerInfo) {
   // register new command
   console.log("Started refreshing application (/) commands.");
   let commands: RESTPostAPIApplicationCommandsJSONBody[];
-  // register guild command 
+  // register guild command
   if (GUILD_ID !== undefined) {
     commands = commands_all.filter((x) => !x.global).map((x) => x.command);
     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
