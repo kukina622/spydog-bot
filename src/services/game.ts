@@ -34,6 +34,7 @@ export class gameService {
     await this.sendAssignedCards();
   }
   private async sendAssignedCards() {
+    if (this.stateCheck(gameState.start)) return
     const assignedCards = await assignedCardRepo
       .getInstance()
       .getAssignedCards();
@@ -116,6 +117,8 @@ export class gameService {
     discordId: string,
     interaction: ButtonInteraction<CacheType>
   ) {
+    if (this.stateCheck(gameState.start)) return
+
     const { CHANNEL_ID } = process.env;
     const usedCardInfo = await assignedCardRepo
       .getInstance()
@@ -149,6 +152,8 @@ export class gameService {
     )?.send(sendContent);
   }
   public async listNotUsedCards(discordId: string) {
+    if (this.stateCheck(gameState.start)) return
+
     const user: users | undefined = await userRepo
       .getInstance()
       .getUserByDiscordId(discordId);
@@ -184,5 +189,11 @@ export class gameService {
         files: files
       });
     }
+  }
+  private stateCheck(state: gameState): boolean {
+    if (this.state !== state) {
+      return false;
+    }
+    return true;
   }
 }
