@@ -10,6 +10,7 @@ import {
 import { assigned_card } from "../entities/assigned_card";
 import { users } from "../entities/users";
 import { assignedCardRepo } from "../repositories/assignedCardRepo";
+import { userRepo } from "../repositories/userRepo";
 
 enum gameState {
   "notYetStart",
@@ -145,5 +146,42 @@ export class gameService {
     return await (
       this.client.channels.cache.get(<string>CHANNEL_ID) as TextChannel
     )?.send(sendContent);
+  }
+  public async listNotUsedCards(discordId: string) {
+    const user: users | undefined = await userRepo
+      .getInstance()
+      .getUserByDiscordId(discordId);
+    // check user existed
+    if (user === undefined) return;
+    const assignedCards_notused: assigned_card[] = (
+      await assignedCardRepo
+        .getInstance()
+        .getAssignedCardsByDiscordId(discordId)
+    ).filter((assignedCard) => !assignedCard.is_used);
+    const { is_spy } = user;
+
+    if (is_spy) {
+      const { files, embed, row } = this.getSendAssignedCardsInfo(
+        assignedCards_notused,
+        is_spy
+      );
+      if (files.length > 0) {
+        await this.client.users.cache.get(discordId)?.send({
+          embeds: [embed],
+          components: [row],
+          files: files
+        });
+      }
+    }
+    const { files, embed, row } = this.getSendAssignedCardsInfo(
+      assignedCards_notused
+    );
+    if (files.length > 0) {
+      await this.client.users.cache.get(discordId)?.send({
+        embeds: [embed],
+        components: [row],
+        files: files
+      });
+    }
   }
 }
