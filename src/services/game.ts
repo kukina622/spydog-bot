@@ -126,7 +126,8 @@ export class gameService {
     } else if (usedCardInfo.is_used) {
       return await interaction.reply("卡片已使用過");
     }
-
+    // update usage
+    await assignedCardRepo.getInstance().updateIsUsedByAssignId(assignId, true);
     const { users, cards } = usedCardInfo;
     let messageContent = "";
     if (cards.is_spycard) {
