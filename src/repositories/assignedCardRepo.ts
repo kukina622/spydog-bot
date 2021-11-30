@@ -45,4 +45,12 @@ export class assignedCardRepo {
       .orderBy("ac.assign_id")
       .getMany();
   }
+  public updateIsUsedByAssignId(assignId: number, is_used: boolean) {
+    return this.repo
+      .createQueryBuilder()
+      .update(assigned_card)
+      .set({ is_used })
+      .where("assign_id = :assign_id", { assign_id: assignId })
+      .execute();
+  }
 }
