@@ -15,4 +15,10 @@ export class userRepo {
   public static getInstance(): userRepo {
     return this.instance;
   }
+  public getUserByDiscordId(discordId: string) {
+    return this.repo
+      .createQueryBuilder("u")
+      .where("u.discord_id = :discord_id", { discord_id: discordId })
+      .getOne();
+  }
 }
