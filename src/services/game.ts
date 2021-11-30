@@ -10,8 +10,15 @@ import {
 import { assigned_card } from "../entities/assigned_card";
 import { users } from "../entities/users";
 import { assignedCardRepo } from "../repositories/assignedCardRepo";
+
+enum gameState {
+  "notYetStart",
+  "start",
+  "stop"
+}
 export class gameService {
   private static instance: gameService;
+  private state: gameState = gameState.notYetStart;
   private constructor(private client: Client) {}
   public static init(client: Client) {
     if (this.instance === undefined) {
@@ -22,6 +29,7 @@ export class gameService {
     return this.instance;
   }
   public async startGame() {
+    this.state = gameState.start;
     await this.sendAssignedCards();
   }
   private async sendAssignedCards() {
