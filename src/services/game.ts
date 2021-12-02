@@ -5,13 +5,15 @@ import {
   MessageEmbed,
   TextChannel,
   ButtonInteraction,
-  CacheType
+  CacheType,
+  CommandInteraction
 } from "discord.js";
 import { assigned_card } from "../entities/assigned_card";
 import { users } from "../entities/users";
 import { assignedCardRepo } from "../repositories/assignedCardRepo";
 import { userRepo } from "../repositories/userRepo";
 import { observerService } from "./observer";
+import { sendCardsService } from "./sendCards";
 
 enum gameState {
   "notYetStart",
@@ -57,24 +59,25 @@ export class gameService {
           assignedCardsOfDiscordId,
           is_spy
         );
-        if (files.length > 0) {
-          await this.client.users.cache.get(discordId)?.send({
-            embeds: [embed],
-            components: [row],
-            files: files
-          });
-        }
+        const sendSpyCards = new sendCardsService({
+          files,
+          embed,
+          row,
+          client: this.client
+        });
+        sendSpyCards.send(discordId);
       }
 
       const { files, embed, row } = this.getSendAssignedCardsInfo(
         assignedCardsOfDiscordId
       );
-
-      await this.client.users.cache.get(discordId)?.send({
-        embeds: [embed],
-        components: [row],
-        files: files
+      const sendNormalCards = new sendCardsService({
+        files,
+        embed,
+        row,
+        client: this.client
       });
+      sendNormalCards.send(discordId);
     }
   }
   private getSendAssignedCardsInfo(
@@ -173,24 +176,24 @@ export class gameService {
         assignedCards_notused,
         is_spy
       );
-      if (files.length > 0) {
-        await this.client.users.cache.get(discordId)?.send({
-          embeds: [embed],
-          components: [row],
-          files: files
-        });
-      }
+      const sendSpyCards = new sendCardsService({
+        files,
+        embed,
+        row,
+        client: this.client
+      });
+      sendSpyCards.send(discordId);
     }
     const { files, embed, row } = this.getSendAssignedCardsInfo(
       assignedCards_notused
     );
-    if (files.length > 0) {
-      await this.client.users.cache.get(discordId)?.send({
-        embeds: [embed],
-        components: [row],
-        files: files
-      });
-    }
+    const sendNormalCards = new sendCardsService({
+      files,
+      embed,
+      row,
+      client: this.client
+    });
+    sendNormalCards.send(discordId);
   }
   private stateCheck(state: gameState): boolean {
     if (this.state !== state) {
