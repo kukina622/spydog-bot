@@ -8,7 +8,7 @@ import {
 import { registerCommand } from "./slashes";
 import { connectDB } from "./entities";
 import { assignedCardRepo, cardRepo, userRepo } from "./repositories";
-import { gameService } from "./services";
+import { gameService, observerService } from "./services";
 import { config as importenv } from "dotenv-flow";
 importenv();
 const {
@@ -59,5 +59,6 @@ client.on("interactionCreate", (interaction) => {
   userRepo.init();
   // services init
   gameService.init(client);
+  observerService.init(client);
   await client.login(process.env.BOT_TOKEN);
 })();
