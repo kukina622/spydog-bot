@@ -19,10 +19,13 @@ export class observerService {
     return this.instance;
   }
   public async notify({ users, cards }: assigned_card) {
+    let today = new Date();
     const sendContent = {
       content: `使用者:${users.name}\n卡片名稱:${cards.card_name}\n類別:${
         cards.is_spycard ? "間諜卡" : "一般卡"
-      }\n隱藏發動:${cards.hidden_use}`,
+      }\n隱藏發動:${
+        cards.hidden_use
+      }\n使用時間:${today.getHours()}:${today.getMinutes()}`,
       files: [cards.card_url]
     };
     await (
