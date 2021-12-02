@@ -11,6 +11,7 @@ import { assigned_card } from "../entities/assigned_card";
 import { users } from "../entities/users";
 import { assignedCardRepo } from "../repositories/assignedCardRepo";
 import { userRepo } from "../repositories/userRepo";
+import { observerService } from "./observer";
 
 enum gameState {
   "notYetStart",
@@ -147,6 +148,7 @@ export class gameService {
       ]
     };
     await interaction.deferUpdate();
+    await observerService.getInstance().notify(usedCardInfo);
     return await (
       this.client.channels.cache.get(<string>CHANNEL_ID) as TextChannel
     )?.send(sendContent);
