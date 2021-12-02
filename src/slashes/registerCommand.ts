@@ -6,7 +6,10 @@ import {
 
 import startgame from "./startGame";
 import listCard from "./listCard";
-const commands_all = [startgame, listCard];
+import stopGame from "./stopGame";
+import restartGame from "./restartGame";
+
+const commands_all = [startgame, listCard, stopGame, restartGame];
 
 let rest: REST;
 

@@ -14,5 +14,10 @@ export async function interactionSlashEvent(interaction: Interaction) {
     await interaction.deferReply();
     const discordId: string = interaction.user.id;
     gameService.getInstance().listNotUsedCards(discordId, interaction);
+  } else if (
+    interaction.commandName === "restartgame" ||
+    interaction.commandName === "stopgame"
+  ) {
+    gameService.getInstance().setState(interaction.commandName);
   }
 }

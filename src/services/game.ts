@@ -205,4 +205,14 @@ export class gameService {
     }
     return true;
   }
+  public setState(state: "restartgame" | "stopgame"): void {
+    switch (state) {
+      case "restartgame":
+        this.state = gameState.start;
+        break;
+      case "stopgame":
+        this.state = gameState.stop;
+        break;
+    }
+  }
 }
