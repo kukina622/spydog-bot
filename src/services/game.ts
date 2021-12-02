@@ -65,7 +65,7 @@ export class gameService {
           row,
           client: this.client
         });
-        sendSpyCards.send(discordId);
+        await sendSpyCards.send(discordId);
       }
 
       const { files, embed, row } = this.getSendAssignedCardsInfo(
@@ -77,7 +77,7 @@ export class gameService {
         row,
         client: this.client
       });
-      sendNormalCards.send(discordId);
+      await sendNormalCards.send(discordId);
     }
   }
   private getSendAssignedCardsInfo(
@@ -182,7 +182,7 @@ export class gameService {
         row,
         client: this.client
       });
-      sendSpyCards.send(discordId);
+      await sendSpyCards.send(discordId);
     }
     const { files, embed, row } = this.getSendAssignedCardsInfo(
       assignedCards_notused
@@ -193,7 +193,7 @@ export class gameService {
       row,
       client: this.client
     });
-    sendNormalCards.send(discordId);
+    await sendNormalCards.send(discordId);
   }
   private stateCheck(state: gameState): boolean {
     if (this.state !== state) {
