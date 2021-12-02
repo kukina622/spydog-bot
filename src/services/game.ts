@@ -156,7 +156,10 @@ export class gameService {
       this.client.channels.cache.get(<string>CHANNEL_ID) as TextChannel
     )?.send(sendContent);
   }
-  public async listNotUsedCards(discordId: string) {
+  public async listNotUsedCards(
+    discordId: string,
+    interaction: CommandInteraction<CacheType>
+  ) {
     if (!this.stateCheck(gameState.start)) return;
 
     const user: users | undefined = await userRepo
@@ -194,6 +197,7 @@ export class gameService {
       client: this.client
     });
     await sendNormalCards.send(discordId);
+    await interaction.editReply("卡片顯示完畢");
   }
   private stateCheck(state: gameState): boolean {
     if (this.state !== state) {

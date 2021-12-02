@@ -13,6 +13,6 @@ export async function interactionSlashEvent(interaction: Interaction) {
   } else if (interaction.commandName === "list") {
     await interaction.deferReply();
     const discordId: string = interaction.user.id;
-    gameService.getInstance().listNotUsedCards(discordId);
+    gameService.getInstance().listNotUsedCards(discordId, interaction);
   }
 }
