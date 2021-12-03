@@ -1,6 +1,6 @@
 import { Client, TextChannel } from "discord.js";
 import { assigned_card } from "../entities/assigned_card";
-
+import { gameState } from "./game";
 export class observerService {
   private static instance: observerService;
   private client: Client;
@@ -31,5 +31,22 @@ export class observerService {
     await (
       this.client.channels.cache.get(this.OBSERVER_CHANNEL_ID) as TextChannel
     )?.send(sendContent);
+  }
+  public async gameStateChange(state: gameState) {
+    let stateName: string = "";
+    switch (+state) {
+      case gameState.notYetStart:
+        stateName = "尚未開始";
+        break;
+      case gameState.start:
+        stateName = "已開始";
+        break;
+      case gameState.stop:
+        stateName = "暫停";
+        break;
+    }
+    await (
+      this.client.channels.cache.get(this.OBSERVER_CHANNEL_ID) as TextChannel
+    )?.send(`遊戲狀態已改變\n目前狀態: ${stateName}`);
   }
 }

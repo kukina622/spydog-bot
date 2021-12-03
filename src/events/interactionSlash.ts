@@ -19,5 +19,6 @@ export async function interactionSlashEvent(interaction: Interaction) {
     interaction.commandName === "stopgame"
   ) {
     gameService.getInstance().setState(interaction.commandName);
+    await interaction.reply("變更狀態成功");
   }
 }

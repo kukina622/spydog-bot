@@ -15,7 +15,7 @@ import { userRepo } from "../repositories/userRepo";
 import { observerService } from "./observer";
 import { sendCardsService } from "./sendCards";
 
-enum gameState {
+export enum gameState {
   "notYetStart",
   "start",
   "stop"
@@ -34,6 +34,7 @@ export class gameService {
   }
   public async startGame() {
     this.state = gameState.start;
+    await observerService.getInstance().gameStateChange(this.state);
     await this.sendAssignedCards();
   }
   private async sendAssignedCards() {
@@ -205,7 +206,7 @@ export class gameService {
     }
     return true;
   }
-  public setState(state: "restartgame" | "stopgame"): void {
+  public async setState(state: "restartgame" | "stopgame") {
     switch (state) {
       case "restartgame":
         this.state = gameState.start;
@@ -214,5 +215,6 @@ export class gameService {
         this.state = gameState.stop;
         break;
     }
+    await observerService.getInstance().gameStateChange(this.state);
   }
 }
