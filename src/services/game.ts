@@ -134,6 +134,20 @@ export class gameService {
     } else if (usedCardInfo.is_used) {
       return await interaction.reply("卡片已使用過");
     }
+    // get MessageActionRow componet
+    const rawComponents = (
+      interaction.message.components as MessageActionRow[]
+    )[0].components;
+    // find the target
+    const targetIndex = rawComponents.findIndex(
+      (rawComponent) => rawComponent.customId === `assign_id:${assignId}`
+    );
+    // disable the button
+    rawComponents[targetIndex].setDisabled(true);
+    // update user button
+    await interaction.update({
+      components: [new MessageActionRow().addComponents(rawComponents)]
+    });
     // update usage
     await assignedCardRepo.getInstance().updateIsUsedByAssignId(assignId, true);
     const { users, cards } = usedCardInfo;
@@ -151,7 +165,6 @@ export class gameService {
         cards.hidden_use ? "https://i.imgur.com/hHe3ulL.jpg" : cards.card_url
       ]
     };
-    await interaction.deferUpdate();
     await observerService.getInstance().notify(usedCardInfo);
     return await (
       this.client.channels.cache.get(<string>CHANNEL_ID) as TextChannel
