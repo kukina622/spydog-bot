@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  discordBot:
+    image: spydog_bot
+    build: .
+    environment:
+      - TZ=Asia/Taipei
+    depends_on:
+      - "mariadb"
+
+  mariadb:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: "thepasswordyouwanttoaccessthedatabase"
+      MARIADB_DATABASE: "spydog"
+      MARIADB_USER: "spydog"
+      MARIADB_PASSWORD: "itspasswordforspydog"
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "127.0.0.1:9100:80"
+    environment:
+      - PMA_HOST=mariadb
+    depends_on:
+      - "mariadb"
