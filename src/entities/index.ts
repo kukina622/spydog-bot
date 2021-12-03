@@ -17,7 +17,7 @@ export async function connectDB(DBConfig: DBConfig) {
     DATABASE_NAME
   } = DBConfig;
   return createConnection({
-    type: "mysql",
+    type: "mariadb",
     host: DATABASE_HOST,
     port: DATABASE_PORT,
     username: DATABASE_USERNAME,
