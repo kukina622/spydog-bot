@@ -5,7 +5,7 @@ import {
   interactionSlashEvent,
   interactionButtonEvent
 } from "./events";
-import { registerCommand } from "./slashes";
+import { registerCommand, addCommandPermission } from "./slashes";
 import { connectDB } from "./entities";
 import { assignedCardRepo, cardRepo, userRepo } from "./repositories";
 import { gameService, observerService } from "./services";
@@ -27,7 +27,8 @@ const client = new Client({
   partials: ["CHANNEL"]
 });
 
-client.once("ready", () => {
+client.once("ready", async () => {
+  await addCommandPermission(client);
   console.log("Bot ready!");
 });
 
