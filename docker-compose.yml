@@ -3,6 +3,7 @@ services:
   discordBot:
     image: spydog_bot
     build: .
+    restart: always
     environment:
       - TZ=Asia/Taipei
     depends_on:
