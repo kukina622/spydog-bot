@@ -55,30 +55,38 @@ export class gameService {
       ) as users;
 
       if (is_spy) {
-        // get spy's sendAssignedCardsInfo
-        const { files, embed, row } = this.getSendAssignedCardsInfo(
-          assignedCardsOfDiscordId,
-          is_spy
+        let assignedCardsOfDiscordId_spy = assignedCardsOfDiscordId.filter(
+          (assignedCard) => assignedCard.cards.is_spycard
         );
-        const sendSpyCards = new sendCardsService({
+        for (let i = 0; i < assignedCardsOfDiscordId_spy.length; i += 5) {
+          const { files, embed, row } = this.getSendAssignedCardsInfo(
+            assignedCardsOfDiscordId_spy.slice(i, i + 5),
+            is_spy
+          );
+          const sendSpyCards = new sendCardsService({
+            files,
+            embed,
+            row,
+            client: this.client
+          });
+          await sendSpyCards.send(discordId);
+        }
+      }
+      let assignedCardsOfDiscordId_notSpy = assignedCardsOfDiscordId.filter(
+        (assignedCard) => !assignedCard.cards.is_spycard
+      );
+      for (let i = 0; i < assignedCardsOfDiscordId_notSpy.length; i += 5) {
+        const { files, embed, row } = this.getSendAssignedCardsInfo(
+          assignedCardsOfDiscordId_notSpy.slice(i, i + 5)
+        );
+        const sendNormalCards = new sendCardsService({
           files,
           embed,
           row,
           client: this.client
         });
-        await sendSpyCards.send(discordId);
-      }
-
-      const { files, embed, row } = this.getSendAssignedCardsInfo(
-        assignedCardsOfDiscordId
-      );
-      const sendNormalCards = new sendCardsService({
-        files,
-        embed,
-        row,
-        client: this.client
-      });
-      await sendNormalCards.send(discordId);
+        await sendNormalCards.send(discordId);
+      }  
     }
   }
   private getSendAssignedCardsInfo(
@@ -189,28 +197,39 @@ export class gameService {
     const { is_spy } = user;
 
     if (is_spy) {
-      const { files, embed, row } = this.getSendAssignedCardsInfo(
-        assignedCards_notused,
-        is_spy
+      let assignedCards_notused_spy = assignedCards_notused.filter(
+        (assignedCard) => assignedCard.cards.is_spycard
       );
-      const sendSpyCards = new sendCardsService({
+      for (let i = 0; i < assignedCards_notused_spy.length; i += 5) {
+        const { files, embed, row } = this.getSendAssignedCardsInfo(
+          assignedCards_notused_spy.slice(i, i + 5),
+          is_spy
+        );
+        const sendSpyCards = new sendCardsService({
+          files,
+          embed,
+          row,
+          client: this.client
+        });
+        await sendSpyCards.send(discordId);
+      }
+    }
+    let assignedCards_notused_notSpy = assignedCards_notused.filter(
+      (assignedCard) => !assignedCard.cards.is_spycard
+    );
+    for (let i = 0; i < assignedCards_notused_notSpy.length; i += 5) {
+      const { files, embed, row } = this.getSendAssignedCardsInfo(
+        assignedCards_notused_notSpy.slice(i, i + 5)
+      );
+      const sendNormalCards = new sendCardsService({
         files,
         embed,
         row,
         client: this.client
       });
-      await sendSpyCards.send(discordId);
+      await sendNormalCards.send(discordId);
     }
-    const { files, embed, row } = this.getSendAssignedCardsInfo(
-      assignedCards_notused
-    );
-    const sendNormalCards = new sendCardsService({
-      files,
-      embed,
-      row,
-      client: this.client
-    });
-    await sendNormalCards.send(discordId);
+
     await interaction.editReply("卡片顯示完畢");
   }
   private stateCheck(state: gameState): boolean {
