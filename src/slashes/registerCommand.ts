@@ -5,8 +5,9 @@ import startgame from "./startGame";
 import listCard from "./listCard";
 import stopGame from "./stopGame";
 import restartGame from "./restartGame";
+import importUser from "./importUser";
 
-const COMMANDS = [startgame, listCard, stopGame, restartGame];
+const COMMANDS = [startgame, listCard, stopGame, restartGame, importUser];
 
 interface registerInfo {
   BOT_TOKEN: string;

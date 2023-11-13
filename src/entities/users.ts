@@ -17,7 +17,8 @@ export class users {
     type: "varchar",
     length: 255,
     nullable: true,
-    default: "NULL"
+    default: "NULL",
+    unique: true
   })
   discord_id: string;
 

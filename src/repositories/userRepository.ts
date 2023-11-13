@@ -21,4 +21,8 @@ export class userRepository {
       .where("u.discord_id = :discord_id", { discord_id: discordId })
       .getOne();
   }
+
+  public createUsers(users: { discord_id: string; name: string }[]) {
+    return this.repo.insert(users);
+  }
 }

@@ -4,7 +4,7 @@ import {
   ButtonStyle,
   Interaction
 } from "discord.js";
-// import { gameService } from "../services/game";
+import { userImporterService } from "../services";
 
 export async function handleSlashEvent(interaction: Interaction) {
   if (!interaction.isCommand()) return;
@@ -26,5 +26,13 @@ export async function handleSlashEvent(interaction: Interaction) {
   ) {
     // gameService.getInstance().setState(interaction.commandName);
     await interaction.reply("變更狀態成功");
+  } else if (interaction.commandName === "import_user") {
+    try {
+      await userImporterService.getInstance().autoImportAllUser();
+      await interaction.reply("匯入成功");
+    } catch (error) {
+      console.log(error);
+      await interaction.reply("匯入失敗");
+    }
   }
 }
