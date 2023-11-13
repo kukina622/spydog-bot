@@ -6,6 +6,7 @@ const listCard = new SlashCommandBuilder()
   .toJSON();
 
 export default {
-  global: true,
+  guild: false,
+  permission: "everyone",
   command: listCard
 };
