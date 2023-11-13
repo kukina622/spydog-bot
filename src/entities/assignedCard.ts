@@ -8,8 +8,8 @@ import {
 import { cards } from "./cards";
 import { users } from "./users";
 
-@Entity()
-export class assigned_card {
+@Entity("assigned_card")
+export class assignedCard {
   @PrimaryGeneratedColumn("increment")
   assign_id: number;
 
@@ -24,7 +24,7 @@ export class assigned_card {
   @Column({ default: false })
   is_used: boolean;
 
-  constructor(param: assigned_card = {} as assigned_card) {
+  constructor(param: assignedCard = {} as assignedCard) {
     const { assign_id, users, cards, is_used } = param;
     this.assign_id = assign_id;
     this.users = users;

@@ -1,11 +1,11 @@
 import { getRepository, Repository } from "typeorm";
-import { assigned_card } from "../entities/assigned_card";
+import { assignedCard } from "../entities/assignedCard";
 
 export class assignedCardRepository {
   private static instance: assignedCardRepository;
-  public repo: Repository<assigned_card>;
+  public repo: Repository<assignedCard>;
   private constructor() {
-    this.repo = getRepository(assigned_card);
+    this.repo = getRepository(assignedCard);
   }
   public static init() {
     if (this.instance === undefined) {
@@ -15,7 +15,7 @@ export class assignedCardRepository {
   public static getInstance(): assignedCardRepository {
     return this.instance;
   }
-  public getAssignedCards(): Promise<assigned_card[]> {
+  public getAssignedCards(): Promise<assignedCard[]> {
     return this.repo
       .createQueryBuilder("ac")
       .innerJoinAndSelect("ac.cards", "c")
@@ -48,7 +48,7 @@ export class assignedCardRepository {
   public updateIsUsedByAssignId(assignId: number, is_used: boolean) {
     return this.repo
       .createQueryBuilder()
-      .update(assigned_card)
+      .update(assignedCard)
       .set({ is_used })
       .where("assign_id = :assign_id", { assign_id: assignId })
       .execute();
