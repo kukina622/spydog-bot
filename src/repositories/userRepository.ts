@@ -1,18 +1,18 @@
 import { getRepository, Repository } from "typeorm";
 import { users } from "../entities/users";
 
-export class userRepo {
-  private static instance: userRepo;
+export class userRepository {
+  private static instance: userRepository;
   public repo: Repository<users>;
   private constructor() {
     this.repo = getRepository(users);
   }
   public static init() {
     if (this.instance === undefined) {
-      this.instance = new userRepo();
+      this.instance = new userRepository();
     }
   }
-  public static getInstance(): userRepo {
+  public static getInstance(): userRepository {
     return this.instance;
   }
   public getUserByDiscordId(discordId: string) {

@@ -1,18 +1,18 @@
 import { getRepository, Repository } from "typeorm";
 import { assigned_card } from "../entities/assigned_card";
 
-export class assignedCardRepo {
-  private static instance: assignedCardRepo;
+export class assignedCardRepository {
+  private static instance: assignedCardRepository;
   public repo: Repository<assigned_card>;
   private constructor() {
     this.repo = getRepository(assigned_card);
   }
   public static init() {
     if (this.instance === undefined) {
-      this.instance = new assignedCardRepo();
+      this.instance = new assignedCardRepository();
     }
   }
-  public static getInstance(): assignedCardRepo {
+  public static getInstance(): assignedCardRepository {
     return this.instance;
   }
   public getAssignedCards(): Promise<assigned_card[]> {

@@ -1,3 +1,3 @@
-export * from "./assignedCardRepo";
-export * from "./cardRepo";
-export * from "./userRepo";
+export * from "./assignedCardRepository";
+export * from "./cardRepository";
+export * from "./userRepository";
