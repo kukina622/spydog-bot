@@ -1,13 +1,13 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 
-import startgame from "./startGame";
+import startGame from "./startGame";
 import listCard from "./listCard";
 import stopGame from "./stopGame";
 import restartGame from "./restartGame";
 import importUser from "./importUser";
 
-const COMMANDS = [startgame, listCard, stopGame, restartGame, importUser];
+const COMMANDS = [startGame, listCard, stopGame, restartGame, importUser];
 
 interface registerInfo {
   BOT_TOKEN: string;
