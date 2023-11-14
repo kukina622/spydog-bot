@@ -1,16 +1,17 @@
 import "reflect-metadata";
-import { Client } from "discord.js";
-import {
-  messageEvent,
-  interactionSlashEvent,
-  interactionButtonEvent
-} from "./events";
-import { registerCommand, addCommandPermission } from "./slashes";
+import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { handleSlashEvent, handleButtonEvent } from "./handlers";
+import { registerCommand } from "./slashes";
 import { connectDB } from "./entities";
-import { assignedCardRepo, cardRepo, userRepo } from "./repositories";
-import { gameService, observerService } from "./services";
+import {
+  cardRepository,
+  userRepository,
+  assignedCardRepository
+} from "./repositories";
+import { userImporterService, observerService } from "./services";
 import { config as importenv } from "dotenv-flow";
 importenv();
+
 const {
   BOT_TOKEN,
   CLIENT_ID,
@@ -19,26 +20,26 @@ const {
   DATABASE_PORT,
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
-  DATABASE_NAME
+  DATABASE_NAME,
+  OBSERVER_CHANNEL_ID
 } = process.env;
 
 const client = new Client({
-  intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"],
-  partials: ["CHANNEL"]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.DirectMessages
+  ],
+  partials: [Partials.Channel]
 });
 
 client.once("ready", async () => {
-  await addCommandPermission(client);
   console.log("Bot ready!");
 });
 
-client.on("messageCreate", (message) => {
-  messageEvent(message);
-});
-
 client.on("interactionCreate", (interaction) => {
-  interactionSlashEvent(interaction);
-  interactionButtonEvent(interaction);
+  handleSlashEvent(interaction);
+  handleButtonEvent(interaction);
 });
 
 (async function () {
@@ -54,12 +55,14 @@ client.on("interactionCreate", (interaction) => {
     CLIENT_ID: <string>CLIENT_ID,
     GUILD_ID
   });
+
   // repositories init
-  assignedCardRepo.init();
-  cardRepo.init();
-  userRepo.init();
+  cardRepository.init();
+  userRepository.init();
+  assignedCardRepository.init();
+
   // services init
-  gameService.init(client);
-  observerService.init(client);
+  observerService.init(client, OBSERVER_CHANNEL_ID as string);
+  userImporterService.init(client, GUILD_ID as string);
   await client.login(process.env.BOT_TOKEN);
 })();

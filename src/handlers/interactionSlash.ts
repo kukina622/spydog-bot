@@ -19,12 +19,10 @@ export async function handleSlashEvent(interaction: Interaction) {
   } else if (interaction.commandName === "list") {
     await interaction.deferReply();
     const discordId: string = interaction.user.id;
-    // gameService.getInstance().listNotUsedCards(discordId, interaction);
   } else if (
     interaction.commandName === "restartgame" ||
     interaction.commandName === "stopgame"
   ) {
-    // gameService.getInstance().setState(interaction.commandName);
     await interaction.reply("變更狀態成功");
   } else if (interaction.commandName === "import_user") {
     try {

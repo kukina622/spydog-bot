@@ -9,8 +9,6 @@ import {
 export async function handleButtonEvent(interaction: Interaction) {
   if (!interaction.isButton()) return;
   if (interaction.customId === "startgame_confirm") {
-    // gameService.getInstance().startGame();
-
     let row = interaction.message.components[0];
     (row.components as any) = row.components.map((button) =>
       button.customId === "startgame_confirm"
@@ -23,8 +21,5 @@ export async function handleButtonEvent(interaction: Interaction) {
   } else if (/^assign_id:\d+$/.test(interaction.customId)) {
     const [assignId] = /\d+/.exec(interaction.customId) as RegExpExecArray;
     const discordId = interaction.user.id;
-    // gameService
-    //   .getInstance()
-    //   .userUseCard(parseInt(assignId), discordId, interaction);
   }
 }
