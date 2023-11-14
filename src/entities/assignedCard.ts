@@ -24,11 +24,15 @@ export class assignedCard {
   @Column({ default: false })
   is_used: boolean;
 
+  @Column("datetime", { default: () => "NOW" })
+  usage_time: Date;
+
   constructor(param: assignedCard = {} as assignedCard) {
-    const { assign_id, users, cards, is_used } = param;
+    const { assign_id, users, cards, is_used, usage_time } = param;
     this.assign_id = assign_id;
     this.users = users;
     this.cards = cards;
     this.is_used = is_used;
+    this.usage_time = usage_time;
   }
 }
