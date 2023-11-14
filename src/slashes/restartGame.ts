@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 const restartGame = new SlashCommandBuilder()
   .setName("restartgame")
   .setDescription("Restart the game!")
+  .setDefaultMemberPermissions("0")
   .toJSON();
 
 export default {
