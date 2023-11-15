@@ -24,7 +24,7 @@ export class assignedCard {
   @Column({ default: false })
   is_used: boolean;
 
-  @Column("datetime", { default: () => "NOW" })
+  @Column("datetime", { nullable: true })
   usage_time: Date;
 
   constructor(param: assignedCard = {} as assignedCard) {
