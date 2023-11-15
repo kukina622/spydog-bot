@@ -25,4 +25,8 @@ export class userRepository {
   public createUsers(users: { discord_id: string; name: string }[]) {
     return this.repo.insert(users);
   }
+
+  public getAllUsers() {
+    return this.repo.find();
+  }
 }

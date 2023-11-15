@@ -5,6 +5,7 @@ import {
   Interaction,
   APIButtonComponent
 } from "discord.js";
+import { gameService } from "../services";
 
 export async function handleButtonEvent(interaction: Interaction) {
   if (!interaction.isButton()) return;
@@ -18,6 +19,7 @@ export async function handleButtonEvent(interaction: Interaction) {
 
     await interaction.message.edit({ components: [row] });
     await interaction.update({ content: "開始遊戲" });
+    await gameService.getInstance().listAllUserCards();
   } else if (/^assign_id:\d+$/.test(interaction.customId)) {
     const [assignId] = /\d+/.exec(interaction.customId) as RegExpExecArray;
     const discordId = interaction.user.id;

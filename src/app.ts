@@ -10,6 +10,7 @@ import {
 } from "./repositories";
 import { userImporterService, observerService } from "./services";
 import { config as importenv } from "dotenv-flow";
+import { gameService } from "./services/game";
 importenv();
 
 const {
@@ -62,6 +63,7 @@ client.on("interactionCreate", (interaction) => {
   assignedCardRepository.init();
 
   // services init
+  gameService.init(client);
   observerService.init(client, OBSERVER_CHANNEL_ID as string);
   userImporterService.init(client, GUILD_ID as string);
   await client.login(process.env.BOT_TOKEN);

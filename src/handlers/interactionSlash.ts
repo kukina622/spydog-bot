@@ -4,7 +4,7 @@ import {
   ButtonStyle,
   Interaction
 } from "discord.js";
-import { userImporterService } from "../services";
+import { userImporterService, gameService } from "../services";
 
 export async function handleSlashEvent(interaction: Interaction) {
   if (!interaction.isCommand()) return;
@@ -19,6 +19,7 @@ export async function handleSlashEvent(interaction: Interaction) {
   } else if (interaction.commandName === "list") {
     await interaction.deferReply();
     const discordId: string = interaction.user.id;
+    await gameService.getInstance().listUserCards(discordId);
   } else if (
     interaction.commandName === "restartgame" ||
     interaction.commandName === "stopgame"
