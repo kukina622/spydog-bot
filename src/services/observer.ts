@@ -1,52 +1,41 @@
-import { Client, TextChannel } from "discord.js";
-import { assigned_card } from "../entities/assigned_card";
-import { gameState } from "./game";
+import { Client } from "discord.js";
+import { assignedCard } from "../entities/assignedCard";
+import { NotifyMessageService } from "./notify";
+
 export class observerService {
   private static instance: observerService;
   private client: Client;
   private OBSERVER_CHANNEL_ID: string;
+
   private constructor(client: Client, OBSERVER_CHANNEL_ID: string) {
     this.client = client;
     this.OBSERVER_CHANNEL_ID = OBSERVER_CHANNEL_ID;
   }
-  public static init(client: Client) {
+
+  public static init(client: Client, OBSERVER_CHANNEL_ID: string) {
     if (this.instance === undefined) {
-      const { OBSERVER_CHANNEL_ID } = process.env;
       this.instance = new observerService(client, <string>OBSERVER_CHANNEL_ID);
     }
   }
+
   public static getInstance(): observerService {
     return this.instance;
   }
-  public async notify({ users, cards }: assigned_card) {
-    let today = new Date();
-    const sendContent = {
-      content: `使用者:${users.name}\n卡片名稱:${cards.card_name}\n類別:${
-        cards.is_spycard ? "間諜卡" : "一般卡"
-      }\n隱藏發動:${
-        cards.hidden_use
-      }\n使用時間:${today.getHours()}:${today.getMinutes()}`,
+
+  public notify({ cards, users }: assignedCard) {
+    const today = new Date();
+    const payload = {
+      content: `
+        使用者:${users.name}\n
+        卡片名稱:${cards.card_name}\n
+        類別:${cards.type}\n
+        隱藏發動:${cards.hidden_use}\n
+        使用時間:${today.getHours()}:${today.getMinutes()}`,
       files: [cards.card_url]
     };
-    await (
-      this.client.channels.cache.get(this.OBSERVER_CHANNEL_ID) as TextChannel
-    )?.send(sendContent);
-  }
-  public async gameStateChange(state: gameState) {
-    let stateName: string = "";
-    switch (+state) {
-      case gameState.notYetStart:
-        stateName = "尚未開始";
-        break;
-      case gameState.start:
-        stateName = "已開始";
-        break;
-      case gameState.stop:
-        stateName = "暫停";
-        break;
-    }
-    await (
-      this.client.channels.cache.get(this.OBSERVER_CHANNEL_ID) as TextChannel
-    )?.send(`遊戲狀態已改變\n目前狀態: ${stateName}`);
+    return new NotifyMessageService(this.client).notifyObserver(
+      this.OBSERVER_CHANNEL_ID,
+      payload
+    );
   }
 }
