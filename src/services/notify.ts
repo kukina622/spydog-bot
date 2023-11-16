@@ -36,11 +36,12 @@ export class NotifyMessageService {
     );
   }
 
-  public notifyShowPlayerCard(
+  public async notifyShowPlayerCard(
     discordId: string,
     payload: INotifyPlayerPayload
   ) {
-    return this.client.users.cache.get(discordId)?.send({
+    const user = await this.client.users.fetch(discordId);
+    return user.send({
       embeds: [payload.embed],
       components: [payload.row],
       files: payload.files
