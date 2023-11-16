@@ -52,11 +52,10 @@ export class Player {
         cards.slice(i, i + 5),
         spy
       );
-      await new NotifyMessageService(client).notifyPlayerCard(this.discordId, {
-        embed,
-        row,
-        files
-      });
+      await new NotifyMessageService(client).notifyShowPlayerCard(
+        this.discordId,
+        { embed, row, files }
+      );
     }
   }
 

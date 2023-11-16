@@ -31,7 +31,10 @@ export class NotifyMessageService {
     );
   }
 
-  public notifyPlayerCard(discordId: string, payload: INotifyPlayerPayload) {
+  public notifyShowPlayerCard(
+    discordId: string,
+    payload: INotifyPlayerPayload
+  ) {
     return this.client.users.cache.get(discordId)?.send({
       embeds: [payload.embed],
       components: [payload.row],
