@@ -1,5 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 import { assignedCard } from "../entities/assignedCard";
+import { cards } from "../entities/cards";
+import { users } from "../entities/users";
 
 export class assignedCardRepository {
   private static instance: assignedCardRepository;
@@ -52,5 +54,9 @@ export class assignedCardRepository {
       .set({ is_used })
       .where("assign_id = :assign_id", { assign_id: assignId })
       .execute();
+  }
+
+  public createAssignedCard(card: cards[], user: users) {
+    return this.repo.insert(card.map((x) => ({ cards: x, users: user })));
   }
 }

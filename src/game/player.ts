@@ -8,7 +8,7 @@ import {
   EmbedBuilder
 } from "discord.js";
 import { users } from "../entities/users";
-import { assignedCardRepository } from "../repositories";
+import { assignedCardRepository, cardRepository } from "../repositories";
 import { AssignedCard } from "./card";
 import { CardType } from "../entities/cards";
 import { NotifyMessageService } from "../services";
@@ -19,19 +19,22 @@ export class Player {
   public readonly isSpy: boolean;
   public readonly team: string;
   public readonly cards: AssignedCard[];
+  private readonly _user: users;
 
   constructor(
     discordId: string,
     name: string,
     isSpy: boolean,
     team: string,
-    cards: AssignedCard[]
+    cards: AssignedCard[],
+    user: users
   ) {
     this.discordId = discordId;
     this.name = name;
     this.isSpy = isSpy;
     this.team = team;
     this.cards = cards;
+    this._user = user;
   }
 
   public async listCards(client: Client): Promise<void> {
@@ -104,6 +107,14 @@ export class Player {
       .updateIsUsedByAssignId(card.assignId, true);
   }
 
+  public async randomAssignCard(type: CardType, count: number) {
+    const cards = await cardRepository.getInstance().getCardsByCardType(type);
+    const randomCards = cards.sort(() => 0.5 - Math.random()).slice(0, count);
+    return assignedCardRepository
+      .getInstance()
+      .createAssignedCard(randomCards, this._user);
+  }
+
   public static async fromUserEntity(user: users): Promise<Player> {
     const assignedCards = await assignedCardRepository
       .getInstance()
@@ -114,7 +125,8 @@ export class Player {
       user.name,
       user.is_spy,
       user.team,
-      assignedCards.map((x) => AssignedCard.fromAssignedCardEntity(x))
+      assignedCards.map((x) => AssignedCard.fromAssignedCardEntity(x)),
+      user
     );
   }
 }

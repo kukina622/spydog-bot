@@ -1,5 +1,5 @@
 import { getRepository, Repository } from "typeorm";
-import { cards } from "../entities/cards";
+import { cards, CardType } from "../entities/cards";
 
 export class cardRepository {
   private static instance: cardRepository;
@@ -14,5 +14,8 @@ export class cardRepository {
   }
   public static getInstance(): cardRepository {
     return this.instance;
+  }
+  public async getCardsByCardType(type: CardType): Promise<cards[]> {
+    return await this.repo.find({ where: { type } });
   }
 }

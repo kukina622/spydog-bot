@@ -1,6 +1,7 @@
 import { Client } from "discord.js";
 import { userRepository } from "../repositories";
 import { Player } from "../game";
+import { CardType } from "../entities/cards";
 
 export class gameService {
   private static instance: gameService;
@@ -46,5 +47,14 @@ export class gameService {
 
     const player = await Player.fromUserEntity(user);
     await player.useCard(assignId, this.client);
+  }
+
+  public async randomAssignCard() {
+    const users = await userRepository.getInstance().getAllUsers();
+    for (const user of users) {
+      const player = await Player.fromUserEntity(user);
+      await player.randomAssignCard(CardType.NORMAL, 3);
+      await player.randomAssignCard(CardType.CUE, 2);
+    }
   }
 }
