@@ -56,7 +56,11 @@ export class assignedCardRepository {
       .execute();
   }
 
-  public createAssignedCard(card: cards[], user: users) {
-    return this.repo.insert(card.map((x) => ({ cards: x, users: user })));
+  public async createAssignedCard(card: cards[], user: users) {
+    const entities = this.repo.create(
+      card.map((x) => ({ cards: x, users: user }))
+    );
+    await this.repo.insert(entities);
+    return entities;
   }
 }

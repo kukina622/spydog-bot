@@ -57,4 +57,13 @@ export class gameService {
       await player.randomAssignCard(CardType.CUE, 2);
     }
   }
+
+  public async cronJobWithRandomAssignCard() {
+    const users = await userRepository.getInstance().getAllUsers();
+    for (const user of users) {
+      const player = await Player.fromUserEntity(user);
+      const [card] = await player.randomAssignCard(CardType.NORMAL, 1);
+      await player.listCardByAssignId(card.assign_id, this.client);
+    }
+  }
 }

@@ -47,6 +47,12 @@ export class Player {
     if (this.isSpy) await this.batchListCards(spyCards, true, client);
   }
 
+  public async listCardByAssignId(assignId: number, client: Client) {
+    const card = this.cards.find((x) => x.assignId === assignId);
+    if (!card) throw new Error("找不到該卡片");
+    await this.batchListCards([card], false, client);
+  }
+
   private async batchListCards(
     cards: AssignedCard[],
     spy = false,
@@ -122,9 +128,13 @@ export class Player {
   public async randomAssignCard(type: CardType, count: number) {
     const cards = await cardRepository.getInstance().getCardsByCardType(type);
     const randomCards = cards.sort(() => 0.5 - Math.random()).slice(0, count);
-    return assignedCardRepository
+    const assignedCardEntities = await assignedCardRepository
       .getInstance()
       .createAssignedCard(randomCards, this._user);
+    this.cards.push(
+      ...assignedCardEntities.map((x) => AssignedCard.fromAssignedCardEntity(x))
+    );
+    return assignedCardEntities;
   }
 
   public static async fromUserEntity(user: users): Promise<Player> {
