@@ -1,6 +1,7 @@
 import { Interaction } from "discord.js";
 import { gameService } from "../services";
 import { disableButtonByCustomId } from "../utils/interaction";
+import { State } from "../entities/gameState";
 
 export async function handleButtonEvent(interaction: Interaction) {
   if (!interaction.isButton()) return;
@@ -9,6 +10,7 @@ export async function handleButtonEvent(interaction: Interaction) {
 
     await interaction.message.edit({ components: [row] });
     await interaction.update({ content: "開始遊戲" });
+    await gameService.getInstance().setGameState(State.STARTING);
     await gameService.getInstance().startGameWithRandomAssignCard();
     await gameService.getInstance().listAllUserCards();
   } else if (/^assign_id:\d+$/.test(interaction.customId)) {

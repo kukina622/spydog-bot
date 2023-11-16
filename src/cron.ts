@@ -3,7 +3,8 @@ import { connectDB } from "./entities";
 import {
   cardRepository,
   userRepository,
-  assignedCardRepository
+  assignedCardRepository,
+  gameStateRepository
 } from "./repositories";
 import { gameService } from "./services";
 import { config as importenv } from "dotenv-flow";
@@ -33,7 +34,12 @@ client.once("ready", async () => {
   console.log("Cron Job Bot ready!");
 
   cron.schedule("* */30 * * * *", () => {
-    gameService.getInstance().cronJobWithRandomAssignCard();
+    try {
+      gameService.getInstance().cronJobWithRandomAssignCard();
+      console.log("cron job running a task every 30 minutes");
+    } catch (error) {
+      console.log(error);
+    }
   });
 });
 
@@ -50,6 +56,7 @@ client.once("ready", async () => {
   cardRepository.init();
   userRepository.init();
   assignedCardRepository.init();
+  gameStateRepository.init();
 
   // services init
   gameService.init(client);

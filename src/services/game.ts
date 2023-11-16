@@ -1,7 +1,8 @@
 import { Client } from "discord.js";
-import { userRepository } from "../repositories";
+import { gameStateRepository, userRepository } from "../repositories";
 import { Player } from "../game";
 import { CardType } from "../entities/cards";
+import { State } from "../entities/gameState";
 
 export class gameService {
   private static instance: gameService;
@@ -22,6 +23,10 @@ export class gameService {
   }
 
   public async listAllUserCards(): Promise<void> {
+    if (!(await this.checkGameState(State.STARTING))) {
+      throw new Error("遊戲尚未開始");
+    }
+
     const users = await userRepository.getInstance().getAllUsers();
     for (const user of users) {
       const player = await Player.fromUserEntity(user);
@@ -30,6 +35,10 @@ export class gameService {
   }
 
   public async listUserCards(discordId: string): Promise<void> {
+    if (!(await this.checkGameState(State.STARTING))) {
+      throw new Error("遊戲尚未開始");
+    }
+
     const user = await userRepository
       .getInstance()
       .getUserByDiscordId(discordId);
@@ -40,6 +49,10 @@ export class gameService {
   }
 
   public async useCard(discordId: string, assignId: number): Promise<void> {
+    if (!(await this.checkGameState(State.STARTING))) {
+      throw new Error("遊戲尚未開始");
+    }
+
     const user = await userRepository
       .getInstance()
       .getUserByDiscordId(discordId);
@@ -59,11 +72,46 @@ export class gameService {
   }
 
   public async cronJobWithRandomAssignCard() {
+    if (!(await this.checkGameState(State.STARTING))) return;
+
     const users = await userRepository.getInstance().getAllUsers();
     for (const user of users) {
       const player = await Player.fromUserEntity(user);
       const [card] = await player.randomAssignCard(CardType.NORMAL, 1);
       await player.listCardByAssignId(card.assign_id, this.client);
     }
+  }
+
+  public async setGameState(state: State) {
+    const currentState = await gameStateRepository
+      .getInstance()
+      .getCurrentState();
+    const description = this.getStateDescription(state);
+    if (!currentState) {
+      await gameStateRepository
+        .getInstance()
+        .createGameState(state, description);
+      return;
+    }
+
+    await gameStateRepository.getInstance().updateGameState(state, description);
+  }
+
+  private getStateDescription(state: State) {
+    switch (state) {
+      case State.PENDING:
+        return "尚未開始";
+      case State.STARTING:
+        return "進行中";
+      case State.PAUSE:
+        return "暫停中";
+    }
+  }
+
+  private async checkGameState(state: State) {
+    const currentState = await gameStateRepository
+      .getInstance()
+      .getCurrentState();
+    return currentState?.state === state;
   }
 }

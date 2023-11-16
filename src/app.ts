@@ -6,7 +6,8 @@ import { connectDB } from "./entities";
 import {
   cardRepository,
   userRepository,
-  assignedCardRepository
+  assignedCardRepository,
+  gameStateRepository
 } from "./repositories";
 import { userImporterService, observerService } from "./services";
 import { config as importenv } from "dotenv-flow";
@@ -61,6 +62,7 @@ client.on("interactionCreate", (interaction) => {
   cardRepository.init();
   userRepository.init();
   assignedCardRepository.init();
+  gameStateRepository.init();
 
   // services init
   gameService.init(client);
