@@ -49,7 +49,7 @@ export class gameService {
     await player.useCard(assignId, this.client);
   }
 
-  public async randomAssignCard() {
+  public async startGameWithRandomAssignCard() {
     const users = await userRepository.getInstance().getAllUsers();
     for (const user of users) {
       const player = await Player.fromUserEntity(user);
