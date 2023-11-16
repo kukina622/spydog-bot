@@ -100,11 +100,23 @@ export class Player {
     const card = this.cards.find((x) => x.assignId === assignId);
     if (!card) throw new Error("卡片使用失敗");
     if (card.isUsed) throw new Error("該卡片已被使用");
+    if (!this.checkCardUsingTimeLimitPassed())
+      throw new Error("五分鐘內卡片僅能使用一次");
 
     card.use(this, client);
     await assignedCardRepository
       .getInstance()
       .updateIsUsedByAssignId(card.assignId, true);
+  }
+
+  private checkCardUsingTimeLimitPassed(): boolean {
+    if (this.cards.every((x) => x.usageTime === null)) return true;
+    const now = new Date();
+    const latestUsageTime = Math.max(
+      ...this.cards.map((x) => x.usageTime?.getTime() ?? 0)
+    );
+
+    return now.getTime() - latestUsageTime > 5 * 60 * 1000;
   }
 
   public async randomAssignCard(type: CardType, count: number) {

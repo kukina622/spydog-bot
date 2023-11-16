@@ -51,7 +51,7 @@ export class assignedCardRepository {
     return this.repo
       .createQueryBuilder()
       .update(assignedCard)
-      .set({ is_used })
+      .set({ is_used, usage_time: new Date() })
       .where("assign_id = :assign_id", { assign_id: assignId })
       .execute();
   }

@@ -13,6 +13,7 @@ export class AssignedCard {
   public readonly type: CardType;
   public readonly typeDescription: string;
   public readonly isUsed: Boolean;
+  public readonly usageTime: Date | null;
 
   private cardStrategy: ICardStrategy;
 
@@ -23,7 +24,8 @@ export class AssignedCard {
     hiddenUse: boolean,
     type: CardType,
     assignId: number,
-    isUsed: Boolean
+    isUsed: Boolean,
+    usageTime: Date | null
   ) {
     this.cid = cid;
     this.cardName = cardName;
@@ -34,6 +36,7 @@ export class AssignedCard {
     this.cardStrategy = this.getStrategy(type);
     this.assignId = assignId;
     this.isUsed = isUsed;
+    this.usageTime = usageTime;
   }
 
   static fromAssignedCardEntity(card: assignedCard): AssignedCard {
@@ -44,7 +47,8 @@ export class AssignedCard {
       card.cards.hidden_use,
       card.cards.type,
       card.assign_id,
-      card.is_used
+      card.is_used,
+      card.usage_time
     );
   }
 

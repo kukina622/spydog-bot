@@ -25,7 +25,7 @@ export class assignedCard {
   is_used: boolean;
 
   @Column("datetime", { nullable: true })
-  usage_time: Date;
+  usage_time: Date | null;
 
   constructor(param: assignedCard = {} as assignedCard) {
     const { assign_id, users, cards, is_used, usage_time } = param;
