@@ -1,8 +1,9 @@
 import { assignedCard } from "../entities/assignedCard";
 import { CardType } from "../entities/cards";
+import { CueCard, ICardStrategy, NormalCard, SpyCard } from "./cardStrategy";
 
 export class AssignedCard {
-  public readonly assignId: Number;
+  public readonly assignId: number;
   public readonly cid: number;
   public readonly cardName: string;
   public readonly cardUrl: string;
@@ -10,6 +11,7 @@ export class AssignedCard {
   public readonly type: CardType;
   public readonly typeDescription: string;
   public readonly isUsed: Boolean;
+  private cardStrategy: ICardStrategy;
 
   constructor(
     cid: number,
@@ -17,7 +19,7 @@ export class AssignedCard {
     cardUrl: string,
     hiddenUse: boolean,
     type: CardType,
-    assignId: Number,
+    assignId: number,
     isUsed: Boolean
   ) {
     this.cid = cid;
@@ -26,6 +28,7 @@ export class AssignedCard {
     this.hiddenUse = hiddenUse;
     this.type = type;
     this.typeDescription = this.getTypeDescription(type);
+    this.cardStrategy = this.getStrategy(type);
     this.assignId = assignId;
     this.isUsed = isUsed;
   }
@@ -53,5 +56,20 @@ export class AssignedCard {
       default:
         return "未知";
     }
+  }
+
+  private getStrategy(type: CardType): ICardStrategy {
+    switch (type) {
+      case CardType.NORMAL:
+        return new NormalCard();
+      case CardType.CUE:
+        return new CueCard();
+      case CardType.SPY:
+        return new SpyCard();
+    }
+  }
+
+  public use(): void {
+    this.cardStrategy?.use();
   }
 }
