@@ -1,21 +1,11 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  Interaction,
-  APIButtonComponent
-} from "discord.js";
+import { Interaction } from "discord.js";
 import { gameService } from "../services";
+import { disableButtonByCustomId } from "../utils/interaction";
 
 export async function handleButtonEvent(interaction: Interaction) {
   if (!interaction.isButton()) return;
   if (interaction.customId === "startgame_confirm") {
-    let row = interaction.message.components[0];
-    (row.components as any) = row.components.map((button) =>
-      button.customId === "startgame_confirm"
-        ? ButtonBuilder.from(button as APIButtonComponent).setDisabled(true)
-        : button
-    );
+    const row = disableButtonByCustomId(interaction, "startgame_confirm");
 
     await interaction.message.edit({ components: [row] });
     await interaction.update({ content: "開始遊戲" });
@@ -23,5 +13,12 @@ export async function handleButtonEvent(interaction: Interaction) {
   } else if (/^assign_id:\d+$/.test(interaction.customId)) {
     const [assignId] = /\d+/.exec(interaction.customId) as RegExpExecArray;
     const discordId = interaction.user.id;
+    try {
+      await gameService.getInstance().useCard(discordId, parseInt(assignId));
+      const row = disableButtonByCustomId(interaction, interaction.customId);
+      await interaction.message.edit({ components: [row] });
+    } catch (error: any) {
+      await interaction.reply(error.message);
+    }
   }
 }

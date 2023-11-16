@@ -1,6 +1,8 @@
+import { Client } from "discord.js";
 import { assignedCard } from "../entities/assignedCard";
 import { CardType } from "../entities/cards";
 import { CueCard, ICardStrategy, NormalCard, SpyCard } from "./cardStrategy";
+import { Player } from "./player";
 
 export class AssignedCard {
   public readonly assignId: number;
@@ -11,6 +13,7 @@ export class AssignedCard {
   public readonly type: CardType;
   public readonly typeDescription: string;
   public readonly isUsed: Boolean;
+
   private cardStrategy: ICardStrategy;
 
   constructor(
@@ -61,15 +64,15 @@ export class AssignedCard {
   private getStrategy(type: CardType): ICardStrategy {
     switch (type) {
       case CardType.NORMAL:
-        return new NormalCard();
+        return new NormalCard(this);
       case CardType.CUE:
-        return new CueCard();
+        return new CueCard(this);
       case CardType.SPY:
-        return new SpyCard();
+        return new SpyCard(this);
     }
   }
 
-  public use(): void {
-    this.cardStrategy?.use();
+  public use(player: Player, client: Client): void {
+    this.cardStrategy?.use(player, client);
   }
 }

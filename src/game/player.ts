@@ -1,7 +1,9 @@
 import {
   ActionRowBuilder,
   ButtonBuilder,
+  ButtonInteraction,
   ButtonStyle,
+  CacheType,
   Client,
   EmbedBuilder
 } from "discord.js";
@@ -12,11 +14,11 @@ import { CardType } from "../entities/cards";
 import { NotifyMessageService } from "../services";
 
 export class Player {
-  private discordId: string;
-  private name: string;
-  private isSpy: boolean;
-  private team: string;
-  private cards: AssignedCard[];
+  public readonly discordId: string;
+  public readonly name: string;
+  public readonly isSpy: boolean;
+  public readonly team: string;
+  public readonly cards: AssignedCard[];
 
   constructor(
     discordId: string,
@@ -89,6 +91,17 @@ export class Player {
       messageButtonList
     );
     return { files, embed, row };
+  }
+
+  public async useCard(assignId: number, client: Client): Promise<void> {
+    const card = this.cards.find((x) => x.assignId === assignId);
+    if (!card) throw new Error("卡片使用失敗");
+    if (card.isUsed) throw new Error("該卡片已被使用");
+
+    card.use(this, client);
+    await assignedCardRepository
+      .getInstance()
+      .updateIsUsedByAssignId(card.assignId, true);
   }
 
   public static async fromUserEntity(user: users): Promise<Player> {

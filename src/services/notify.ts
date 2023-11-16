@@ -18,6 +18,11 @@ export interface INotifyPlayerPayload {
   files: string[];
 }
 
+export interface INotifyUsedCard {
+  content: string;
+  files: string[];
+}
+
 export class NotifyMessageService {
   private client: Client;
 
@@ -40,5 +45,11 @@ export class NotifyMessageService {
       components: [payload.row],
       files: payload.files
     });
+  }
+
+  public notifyUsedCard(channelID: string, payload: INotifyUsedCard) {
+    return (this.client.channels.cache.get(channelID) as TextChannel)?.send(
+      payload
+    );
   }
 }

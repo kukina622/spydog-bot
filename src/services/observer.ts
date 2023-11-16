@@ -1,6 +1,8 @@
 import { Client } from "discord.js";
 import { assignedCard } from "../entities/assignedCard";
 import { NotifyMessageService } from "./notify";
+import { AssignedCard, Player } from "../game";
+import { users } from "../entities/users";
 
 export class observerService {
   private static instance: observerService;
@@ -22,16 +24,18 @@ export class observerService {
     return this.instance;
   }
 
-  public notify({ cards, users }: assignedCard) {
+  public notify(player: Player, card: AssignedCard) {
     const today = new Date();
+    const content =
+      `使用者: ${player.name}\n` +
+      `卡片名稱: ${card.cardName}\n` +
+      `類別: ${card.typeDescription}\n` +
+      `隱藏發動: ${card.hiddenUse}\n` +
+      `使用時間: ${today.getHours()}:${today.getMinutes()}`;
+
     const payload = {
-      content: `
-        使用者:${users.name}\n
-        卡片名稱:${cards.card_name}\n
-        類別:${cards.type}\n
-        隱藏發動:${cards.hidden_use}\n
-        使用時間:${today.getHours()}:${today.getMinutes()}`,
-      files: [cards.card_url]
+      content: content.replace("/\n+/", "\n"),
+      files: [card.cardUrl]
     };
     return new NotifyMessageService(this.client).notifyObserver(
       this.OBSERVER_CHANNEL_ID,

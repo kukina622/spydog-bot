@@ -37,4 +37,14 @@ export class gameService {
     const player = await Player.fromUserEntity(user);
     await player.listCards(this.client);
   }
+
+  public async useCard(discordId: string, assignId: number): Promise<void> {
+    const user = await userRepository
+      .getInstance()
+      .getUserByDiscordId(discordId);
+    if (!user) throw new Error("找不到該用戶");
+
+    const player = await Player.fromUserEntity(user);
+    await player.useCard(assignId, this.client);
+  }
 }
