@@ -1,5 +1,6 @@
 import { NotifyMessageService } from "../../services";
 import { observerService } from "../../services/observer";
+import { resolveCardUrl } from "../../utils/card";
 import { AssignedCard } from "../card";
 import { Player } from "../player";
 import { ICardStrategy } from "./cardStrategy";
@@ -15,7 +16,7 @@ export class NormalCard implements ICardStrategy {
     const message = `<@${player.discordId}>使用了`;
     const payload = {
       content: message,
-      files: [this.card.cardUrl]
+      files: [resolveCardUrl(this.card.cardUrl, this.card.hiddenUse)]
     };
     await observerService.getInstance().notify(player, this.card);
     await new NotifyMessageService(client).notifyUsedCard(
