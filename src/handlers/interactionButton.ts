@@ -5,8 +5,8 @@ import { State } from "../entities/gameState";
 
 export async function handleButtonEvent(interaction: Interaction) {
   if (!interaction.isButton()) return;
-  if (interaction.customId === "startgame_confirm") {
-    const row = disableButtonByCustomId(interaction, "startgame_confirm");
+  if (interaction.customId === "start_game_confirm") {
+    const row = disableButtonByCustomId(interaction, "start_game_confirm");
 
     await interaction.message.edit({ components: [row] });
     await interaction.update({ content: "開始遊戲" });

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 const startGame = new SlashCommandBuilder()
-  .setName("startgame")
+  .setName("start_game")
   .setDescription("Start the game!")
   .setDefaultMemberPermissions("0")
   .toJSON();

@@ -9,10 +9,10 @@ import { State } from "../entities/gameState";
 
 export async function handleSlashEvent(interaction: Interaction) {
   if (!interaction.isCommand()) return;
-  if (interaction.commandName === "startgame") {
+  if (interaction.commandName === "start_game") {
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents([
       new ButtonBuilder()
-        .setCustomId("startgame_confirm")
+        .setCustomId("start_game_confirm")
         .setLabel("確定")
         .setStyle(ButtonStyle.Success)
     ]);
@@ -25,10 +25,10 @@ export async function handleSlashEvent(interaction: Interaction) {
     } catch (error: any) {
       await interaction.reply(error.message);
     }
-  } else if (interaction.commandName === "restartgame") {
+  } else if (interaction.commandName === "restart_game") {
     await gameService.getInstance().setGameState(State.STARTING);
     await interaction.reply("變更狀態成功");
-  } else if (interaction.commandName === "stopgame") {
+  } else if (interaction.commandName === "stop_game") {
     await gameService.getInstance().setGameState(State.PAUSE);
     await interaction.reply("變更狀態成功");
   } else if (interaction.commandName === "import_user") {

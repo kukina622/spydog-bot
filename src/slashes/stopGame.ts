@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 const stopGame = new SlashCommandBuilder()
-  .setName("stopgame")
+  .setName("stop_game")
   .setDescription("Stop the game!")
   .setDefaultMemberPermissions("0")
   .toJSON();

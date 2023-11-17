@@ -10,9 +10,9 @@ import {
   gameStateRepository
 } from "./repositories";
 import { userImporterService, observerService } from "./services";
-import { config as importenv } from "dotenv-flow";
+import { config as importEnv } from "dotenv-flow";
 import { gameService } from "./services/game";
-importenv();
+importEnv();
 
 const {
   BOT_TOKEN,

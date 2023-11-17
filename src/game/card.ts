@@ -55,7 +55,7 @@ export class AssignedCard {
   public getTypeDescription(type: CardType): string {
     switch (type) {
       case CardType.NORMAL:
-        return "一般卡";
+        return "功能卡";
       case CardType.CUE:
         return "提示卡";
       case CardType.SPY:

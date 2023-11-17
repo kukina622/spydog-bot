@@ -7,10 +7,10 @@ import {
   gameStateRepository
 } from "./repositories";
 import { gameService } from "./services";
-import { config as importenv } from "dotenv-flow";
+import { config as importEnv } from "dotenv-flow";
 import cron from "node-cron";
 
-importenv();
+importEnv();
 
 const {
   BOT_TOKEN,
