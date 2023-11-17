@@ -1,8 +1,17 @@
 version: "3.7"
 services:
-  discordBot:
-    image: spydog_bot
-    build: .
+  app:
+    image: app
+    build: ./dockerfile/app
+    restart: always
+    environment:
+      - TZ=Asia/Taipei
+    depends_on:
+      - "mariadb"
+
+  cron:
+    image: cron
+    build: ./dockerfile/cron
     restart: always
     environment:
       - TZ=Asia/Taipei
@@ -20,7 +29,7 @@ services:
   phpmyadmin:
     image: phpmyadmin
     ports:
-      - "127.0.0.1:9100:80"
+      - "127.0.0.1:8080:80"
     environment:
       - PMA_HOST=mariadb
     depends_on:
