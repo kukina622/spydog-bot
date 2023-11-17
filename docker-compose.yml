@@ -1,17 +1,17 @@
 version: "3.7"
 services:
   app:
-    image: app
-    build: ./dockerfile/app
+    build: ./
+    command: yarn ts-node src/app.ts
     restart: always
     environment:
       - TZ=Asia/Taipei
     depends_on:
       - "mariadb"
 
-  cron:
-    image: cron
-    build: ./dockerfile/cron
+  app-cron:
+    build: ./
+    command: yarn ts-node src/cron.ts
     restart: always
     environment:
       - TZ=Asia/Taipei
