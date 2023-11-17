@@ -127,7 +127,10 @@ export class Player {
 
   public async randomAssignCard(type: CardType, count: number) {
     const cards = await cardRepository.getInstance().getCardsByCardType(type);
-    const randomCards = cards.sort(() => 0.5 - Math.random()).slice(0, count);
+    const randomCards = [];
+    for (let i = 0; i < count; i++) {
+      randomCards.push(cards[Math.floor(Math.random() * cards.length)]);
+    }
     const assignedCardEntities = await assignedCardRepository
       .getInstance()
       .createAssignedCard(randomCards, this._user);
