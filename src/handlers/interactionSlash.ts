@@ -22,6 +22,10 @@ export async function handleSlashEvent(interaction: Interaction) {
       await interaction.deferReply();
       const discordId: string = interaction.user.id;
       await gameService.getInstance().listUserCards(discordId);
+      await interaction.followUp({
+        content: "卡片顯示完畢",
+        ephemeral: true
+      });
     } catch (error: any) {
       await interaction.reply(error.message);
     }
